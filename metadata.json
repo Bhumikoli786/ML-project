@@ -1,0 +1,5 @@
+{
+  "name": "MarksPredict AI",
+  "description": "A Machine Learning project to predict student marks based on study hours and attendance, supporting SDG Goal 4: Quality Education.",
+  "requestFramePermissions": []
+}
