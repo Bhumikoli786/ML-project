@@ -6,7 +6,8 @@ import {
 } from 'recharts';
 import { 
   GraduationCap, BookOpen, Users, TrendingUp, 
-  Play, RefreshCw, Info, Moon, Award
+  Play, RefreshCw, Info, Moon, Award,
+  Lightbulb, CheckCircle, ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -285,10 +286,42 @@ export default function App() {
   }, [dataset]);
 
   const getAcademicPerformance = (marks: number) => {
-    if (marks >= 85) return { label: 'Excellent', color: 'text-emerald-600 bg-emerald-50' };
-    if (marks >= 70) return { label: 'Good', color: 'text-blue-600 bg-blue-50' };
-    if (marks >= 50) return { label: 'Average', color: 'text-amber-600 bg-amber-50' };
-    return { label: 'Needs Improvement', color: 'text-rose-600 bg-rose-50' };
+    if (marks >= 85) return { 
+      label: 'Excellent', 
+      color: 'text-emerald-600 bg-emerald-50',
+      tips: [
+        'Maintain your consistent study schedule.',
+        'Consider mentoring peers to deepen your understanding.',
+        'Explore advanced topics beyond the curriculum for enrichment.'
+      ]
+    };
+    if (marks >= 70) return { 
+      label: 'Good', 
+      color: 'text-blue-600 bg-blue-50',
+      tips: [
+        'Focus on specific weak areas in your previous scores.',
+        'Increase daily study hours by 15-30 minutes for higher precision.',
+        'Practice with more mock tests to improve exam time management.'
+      ]
+    };
+    if (marks >= 50) return { 
+      label: 'Average', 
+      color: 'text-amber-600 bg-amber-50',
+      tips: [
+        'Prioritize attendance to ensure you don\'t miss core concepts.',
+        'Create a dedicated study environment free from distractions.',
+        'Set specific, small goals for each study session to track progress.'
+      ]
+    };
+    return { 
+      label: 'Needs Improvement', 
+      color: 'text-rose-600 bg-rose-50',
+      tips: [
+        'Focus heavily on improving attendance to at least 90%.',
+        'Seek help from teachers or tutors for foundational concepts.',
+        'Ensure 7-8 hours of sleep to improve cognitive retention and focus.'
+      ]
+    };
   };
 
   return (
@@ -404,6 +437,56 @@ export default function App() {
                 </ResponsiveContainer>
               </div>
             </div>
+
+            {/* Recommendations Section */}
+            <AnimatePresence>
+              {prediction !== null && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
+                      <Lightbulb className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-800">Study Tips & Recommendations</h3>
+                      <p className="text-sm text-slate-500">Personalized steps to improve your academic journey</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      {getAcademicPerformance(prediction).tips?.map((tip: string, idx: number) => (
+                        <div key={idx} className="flex gap-3 items-start p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                          <div className="mt-1">
+                            <CheckCircle className="w-4 h-4 text-emerald-500" />
+                          </div>
+                          <p className="text-sm text-slate-700 leading-relaxed font-medium">{tip}</p>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="bg-indigo-50 rounded-2xl p-6 flex flex-col justify-center border border-indigo-100 relative overflow-hidden">
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-2 text-indigo-700 font-bold mb-3 uppercase tracking-wider text-xs">
+                          <ArrowRight className="w-4 h-4" />
+                          Impact Analysis
+                        </div>
+                        <p className="text-indigo-900 font-semibold mb-2">
+                          Following these steps could potentially improve your final results by up to 15-20%.
+                        </p>
+                        <p className="text-indigo-600 text-sm">
+                          Consistent application of these personalized strategies is the key to unlocking higher academic potential.
+                        </p>
+                      </div>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-200/20 blur-3xl rounded-full -mr-16 -mt-16"></div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Right Column: Prediction System */}
